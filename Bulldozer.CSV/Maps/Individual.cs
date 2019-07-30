@@ -42,6 +42,8 @@ namespace Bulldozer.CSV
         private int LoadIndividuals( CSVInstance csvData )
         {
             var lookupContext = new RockContext();
+            //increase efficiency of save?
+            lookupContext.Configuration.AutoDetectChangesEnabled = false;
 
             // Marital statuses: Married, Single, Separated, etc
             var maritalStatusTypes = DefinedTypeCache.Get( new Guid( Rock.SystemGuid.DefinedType.PERSON_MARITAL_STATUS ), lookupContext ).DefinedValues;
@@ -680,7 +682,14 @@ namespace Bulldozer.CSV
                         }
                         else
                         {
-                            lookupContext.Groups.Attach( currentFamilyGroup );
+                            //try
+                            //{
+                            //    lookupContext.Configuration.AutoDetectChangesEnabled = false;
+                                lookupContext.Groups.Attach( currentFamilyGroup );
+                            //} finally
+                            //{
+                            //    lookupContext.Configuration.AutoDetectChangesEnabled = true;
+                            //}
                         }
 
                         currentFamilyGroup.Members.Add( groupMember );
